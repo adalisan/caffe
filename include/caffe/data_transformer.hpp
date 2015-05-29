@@ -6,6 +6,7 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
+#include "opencv2/opencv.hpp"
 
 namespace caffe {
 
@@ -98,6 +99,7 @@ class DataTransformer {
    *    Datum containing the data to be transformed.
    */
   vector<int> InferBlobShape(const Datum& datum);
+
   /**
    * @brief Infers the shape of transformed_blob will have when
    *    the transformation is applied to the data.
@@ -115,6 +117,7 @@ class DataTransformer {
    * @param mat_vector
    *    A vector of Mat containing the data to be transformed.
    */
+
 #ifdef USE_OPENCV
   vector<int> InferBlobShape(const vector<cv::Mat> & mat_vector);
   /**
@@ -125,6 +128,17 @@ class DataTransformer {
    *    cv::Mat containing the data to be transformed.
    */
   vector<int> InferBlobShape(const cv::Mat& cv_img);
+   /**
+   * @brief Imresizes the image so that the longer side is of length img_size
+   * and flip it if do_mirror is on
+   * @param cv_img
+   *    cv::Mat for the image to transform
+   * @param img_size
+   *    int, final length of the longer side
+   * @param do_mirror
+   *    bool whether to flip or not
+   */
+  cv::Mat Transform_IDL(cv::Mat cv_img, int img_size, bool do_mirror);
 #endif  // USE_OPENCV
 
  protected:
