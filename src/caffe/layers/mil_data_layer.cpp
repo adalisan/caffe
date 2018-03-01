@@ -97,8 +97,8 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       << top[0]->width();
   
   // label
-  top[1]->Reshape(images_per_batch, n_classes, 1, 1);
-  this->prefetch_label_.Reshape(images_per_batch, n_classes, 1, 1);
+  top[1]->Reshape(1, n_classes, 1, 1);
+  this->prefetch_label_.Reshape(1, n_classes, 1, 1);
 
   this->counter_ = 0;
 }
@@ -132,15 +132,20 @@ void MILDataLayer<Dtype>::InternalThreadEntry() {
   for(int i_image = 0; i_image < images_per_batch; i_image++){
     // Sample which image to read
     unsigned int index = counter_; counter_ = counter_ + 1;
+    
     const unsigned int rand_index = this->PrefetchRand();
-    if(this->layer_param_.mil_data_param().randomize())
-      index = rand_index;
+    if(this->layer_param_.mil_data_param().randomize() && (i_image==0)){
+      // index = ((rand_index*images_per_batch) % this->num_images_)*images_per_batch;
+      index = (rand_index/images_per_batch)*images_per_batch;
+      counter_ = index + 1;
+    }
 
     // LOG(INFO) << index % this->num_images_ << ", " << this->num_images_;
+    // LOG(INFO) << i_image << ", " << index << ", " << this->num_images_ << ", " << index % this->num_images_;
     pair<std::string, std::string> p = this->image_database_[index % this->num_images_];
     string im_name = p.first;
     string full_im_name = p.second;
-    
+    // LOG(INFO) << "img_id: " << i_image << ", image_name: " << im_name;
     cv::Mat cv_img = cv::imread(full_im_name, CV_LOAD_IMAGE_COLOR);
     if (!cv_img.data) {
       LOG(ERROR) << "Could not open or find file " << full_im_name;
@@ -178,9 +183,15 @@ void MILDataLayer<Dtype>::InternalThreadEntry() {
       img_size_i = std::max((float)1., img_size_i*scale_factor);
     }
       
-    for(int i_label = 0; i_label < n_classes; i_label++){
-      top_label[i_image*n_classes + i_label] = 
-        label[i_label];
+
+    if (i_image==0)
+      for(int i_label = 0; i_label < n_classes; i_label++){
+	top_label[i_label] = label[i_label];
+      }
+    else{ // check label consistency in the same bag
+      for(int i_label = 0; i_label < n_classes; i_label++){
+        CHECK_EQ(top_label[i_label],label[i_label]);
+      }
     }
   }
 }
