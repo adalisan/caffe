@@ -348,6 +348,7 @@ message LayerParameter {
   optional WindowDataParameter window_data_param = 129;
   optional MILDataParameter mil_data_param = 10001;
   optional MILParameter mil_param = 10002;
+  optional VidMILParameter vid_mil_param = 10004;
 }
 
 // Message that stores parameters used to apply transformation
@@ -1087,3 +1088,15 @@ message PReLUParameter {
   // Whether or not slope paramters are shared across channels.
   optional bool channel_shared = 2 [default = false];
 }
+
+// Message that stores parameters used by VidMILLayer
+message VidMILParameter {
+  enum MILType {
+    MAX = 0;
+    AVE = 1;
+    NOR = 2;
+  }
+  optional MILType type = 1 [default = MAX];
+}
+
+
