@@ -5,14 +5,14 @@
 #include <string>
 #include <utility>
 #include <vector>
-
+#ifdef USE_OPENCV
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-
+#endif   // USE_OPENCV
 #include "caffe/common.hpp"
-#include "caffe/data_layers.hpp"
 #include "caffe/layer.hpp"
+#include "caffe/layers/data_layer.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
