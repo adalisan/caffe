@@ -13,6 +13,7 @@
 #include "caffe/common.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/layers/data_layer.hpp"
+#include "caffe/layers/mil_data_layer.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
