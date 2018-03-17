@@ -4,6 +4,11 @@ sudo: required
 language: cpp
 compiler: gcc
 
+branches:
+  only:
+    master
+    mil_caffe_1
+    
 env:
   global:
     - NUM_THREADS=4
