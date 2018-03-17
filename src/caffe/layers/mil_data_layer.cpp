@@ -22,7 +22,7 @@ namespace caffe {
 
 template <typename Dtype>
 MILDataLayer<Dtype>::~MILDataLayer<Dtype>() {
-  this->JoinPrefetchThread();
+  this->StopInternalThread();
 }
 
 template <typename Dtype>
@@ -89,17 +89,36 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   }
   num_images_ = count;
   LOG(INFO) << "Number of images: " << count;
-
-  top[0]->Reshape(images_per_batch*num_scales, channels, img_size, img_size);
-  this->prefetch_data_.Reshape(images_per_batch*num_scales, channels, img_size, img_size);
+  /////////////////////////////////
+  //vector<int> top_shape = this->data_transformer_->InferBlobShape(cv_img);
+  //this->transformed_data_.Reshape(top_shape);
+  vector<int> top_shape{images_per_batch*num_scales, channels, img_size, img_size};
+  // Reshape prefetch_data and top[0] according to the batch_size.
+  const int batch_size = images_per_batch;
+  CHECK_GT(batch_size, 0) << "Positive batch size required";
+  top_shape[0] = batch_size*num_scales;
+  // for (int i = 0; i < this->prefetch_.size(); ++i) {
+  //   this->prefetch_[i]->data_.Reshape(top_shape);
+  // }
+  
+  ////////////////////////////////////////////////
+  top[0]->Reshape(top_shape);
+  //top[0]->Reshape(images_per_batch*num_scales, channels, img_size, img_size);
+  
+  for (int i = 0; i < this->prefetch_.size(); ++i) {
+    this->prefetch_[i]->data_.Reshape(top_shape);
+  }
 
   LOG(INFO) << "output data size: " << top[0]->num() << ","
       << top[0]->channels() << "," << top[0]->height() << ","
       << top[0]->width();
 
   // label
-  top[1]->Reshape(images_per_batch, n_classes, 1, 1);
-  this->prefetch_label_.Reshape(images_per_batch, n_classes, 1, 1);
+  vector<int> label_size{images_per_batch, n_classes, 1, 1};
+  top[1]->Reshape(label_size);
+  for (int i = 0; i < this->prefetch_.size(); ++i) {
+    this->prefetch_[i]->label_.Reshape(label_size);
+  }
 
   this->counter_ = 0;
 }
