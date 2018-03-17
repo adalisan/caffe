@@ -6,6 +6,8 @@
 Caffe is a deep learning framework made with expression, speed, and modularity in mind.
 It is developed by Berkeley AI Research ([BAIR](http://bair.berkeley.edu))/The Berkeley Vision and Learning Center (BVLC) and community contributors.
 
+This fork tries to add multiple instance learning to caffe networks.
+
 Check out the [project site](http://caffe.berkeleyvision.org) for all the details like
 
 - [DIY Deep Learning for Vision with Caffe](https://docs.google.com/presentation/d/1UeKXVgRvvxg9OUdh_UiC5G71UMscNPlvArsWER41PsU/edit#slide=id.p)
