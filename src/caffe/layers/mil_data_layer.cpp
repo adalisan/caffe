@@ -17,6 +17,7 @@
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
+#include "caffe/util/hdf5.hpp"
 
 namespace caffe {
 
