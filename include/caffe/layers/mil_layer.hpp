@@ -1,3 +1,18 @@
+#ifndef CAFFE_MIL_LAYER_HPP_
+#define CAFFE_MIL_LAYER_HPP_
+
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "caffe/blob.hpp"
+#include "caffe/internal_thread.hpp"
+#include "caffe/layer.hpp"
+#include "caffe/layers/base_data_layer.hpp"
+#include "caffe/proto/caffe.pb.h"
+
+namespace caffe {
+
 
 /* MILLayer
 */
@@ -25,3 +40,6 @@ class MILLayer : public Layer<Dtype> {
 
   int channels_, height_, width_, num_images_;
 };
+
+}
+#endif // CAFFE_MIL_LAYER_HPP_

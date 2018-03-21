@@ -93,7 +93,11 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   /////////////////////////////////
   //vector<int> top_shape = this->data_transformer_->InferBlobShape(cv_img);
   //this->transformed_data_.Reshape(top_shape);
-  vector<int> top_shape{images_per_batch*num_scales, channels, img_size, img_size};
+  vector<int> top_shape(4,0);
+  top_shape[0] = images_per_batch*num_scales;
+  top_shape[1] = channels;
+  top_shape[2] = img_size;
+  top_shape[3] = img_size;
   // Reshape prefetch_data and top[0] according to the batch_size.
   const int batch_size = images_per_batch;
   CHECK_GT(batch_size, 0) << "Positive batch size required";
@@ -115,7 +119,8 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       << top[0]->width();
 
   // label
-  vector<int> label_size{images_per_batch, n_classes, 1, 1};
+  vector<int> label_size (4,0);
+  label_size[0]=  images_per_batch ;label_size[1] =  n_classes; label_size[2] = 1; label_size[3] =  1;
   top[1]->Reshape(label_size);
   for (int i = 0; i < this->prefetch_.size(); ++i) {
     this->prefetch_[i]->label_.Reshape(label_size);
