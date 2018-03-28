@@ -37,7 +37,11 @@ void CrossEntropyLossLayer<Dtype>::Forward_cpu(
       l = -(1-bottom_label[i])*log(max((1-bottom_data[i]),Dtype(0.00001)));
       loss += l;
     }
-    CHECK_GE(l, 0.) << "loss is not >= 0, loss: " << l << " bottom_label: " << bottom_label[i] << " bottom_data: " << bottom_data[i];
+      for (int i = 0; i < count; ++i) {
+      LOG(INFO)<<"class"<< i <<" label:"<< bottom_label[i]<< " bottom_data: " <<bottom_data[i];
+      }
+    CHECK_GE(l, 0.) << "loss is not >= 0, "<<i<<" loss: " << l << " bottom_label: " << bottom_label[i] << " bottom_data: " << bottom_data[i];
+      
   }
   top[0]->mutable_cpu_data()[0] = loss / count;
   // LOG(INFO) << "CrossEntropyLossLayer: " << loss / count;
