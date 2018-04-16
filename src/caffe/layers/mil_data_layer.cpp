@@ -157,9 +157,9 @@ void MILDataLayer<Dtype>::InternalThreadEntry() {
     CHECK_EQ(label_blob_.height(), n_classes) << "Expected height of label to be " << n_classes;
     CHECK_EQ(label_blob_.channels(), 1)       << "Expected channels of label to be 1." ;
     CHECK_EQ(label_blob_.num(), 1)            << "Expected num of label to be 1." ;
-    for (int i_scales = 0; i_scales < label_blob_.height(); i_scales++) {
-     LOG(INFO) << i_scales<<"th input label for  " << im_name <<" : " <<label[i_scales];
-    }
+    // for (int i_scales = 0; i_scales < label_blob_.height(); i_scales++) {
+    //  LOG(INFO) << i_scales<<"th input label for  " << im_name <<" : " <<label[i_scales];
+    // }
 
     float img_size_i = img_size;
     for(int i_scales = 0; i_scales < num_scales; i_scales++){
