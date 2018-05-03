@@ -9,7 +9,6 @@
 #include "caffe/filler.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/layers/mil_layer.hpp"
-//#include "caffe/layers/vision_layers.hpp"
 #include "caffe/util/math_functions.hpp"
 
 using std::max;
@@ -93,7 +92,6 @@ void MILLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
     for(int j = 0; j < channels_; j++){
       for(int i = 0; i < num_images_; i++){
         offset = bottom[0]->offset(i, j);
-
         for(int k = 0; k < height_; k++){
           for(int l = 0; l < width_; l++){
             switch (this->layer_param_.mil_param().type()) {
@@ -109,7 +107,6 @@ void MILLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
             offset = offset + 1;
           }
         }
-
       }
     }
   }

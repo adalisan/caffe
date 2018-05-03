@@ -35,11 +35,12 @@ class MILLayer : public Layer<Dtype> {
   //     vector<Blob<Dtype>*>* top);
   virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+
   // virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
   //    const vector<bool>& propagate_down, vector<Blob<Dtype>*>* bottom);
 
   int channels_, height_, width_, num_images_;
 };
 
-}
+}   // namespace caffe
 #endif // CAFFE_MIL_LAYER_HPP_

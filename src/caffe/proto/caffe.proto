@@ -419,8 +419,17 @@ message LayerParameter {
   optional ThresholdParameter threshold_param = 128;
   optional TileParameter tile_param = 138;
   optional WindowDataParameter window_data_param = 129;
+  optional LabelVecParameter label_q_param = 1000;
   optional MILDataParameter mil_data_param = 10001;
   optional MILParameter mil_param = 10002;
+  optional AttentionParameter att_param = 10003;
+  optional VidMILParameter vid_mil_param = 10004;
+
+}
+
+message LabelVecParameter {
+  optional uint32 label_dim = 1 [default = 20];
+  optional uint32 q_dim = 2 [default = 4096];
 }
 
 // Message that stores parameters used to apply transformation
@@ -828,6 +837,55 @@ message ImageDataParameter {
   optional string root_folder = 12 [default = ""];
 }
 
+message MILDataParameter {
+  // Specify the data source.
+  optional string source = 1;
+
+  // Number of scales for each image
+  optional uint32 num_scales = 2 [default = 1];
+
+  // Side length ratio between neighbouring scales
+  optional float scale_factor = 6 [default = 1];
+
+  // Number of channels in the image
+  optional uint32 channels = 4 [default = 3];
+
+  // Specify the number of images per batch
+  optional uint32 images_per_batch = 3;
+  // Specify the number of classes
+  optional uint32 n_classes = 5;
+  // specify the box_dir and label_dir
+  optional string label_file = 7;
+
+  // Root directory which contains all the images
+  optional string root_dir = 11;
+  // Extention for the file
+  optional string ext = 12;
+
+  // To randomize or not
+  optional bool randomize = 13 [default = true];
+}
+
+// Message that stores parameters used by MILLayer
+message MILParameter {
+  enum MILType {
+    MAX = 0;
+    NOR = 1;
+  }
+  optional MILType type = 1 [default = MAX]; 
+}
+
+// Message that stores parameters used by VidMILLayer
+message VidMILParameter {
+  enum MILType {
+    MAX = 0;
+    AVE = 1;
+    NOR = 2;
+  }
+  optional MILType type = 1 [default = MAX];
+}
+
+
 message InfogainLossParameter {
   // Specify the infogain matrix source.
   optional string source = 1;
@@ -956,6 +1014,12 @@ message PythonParameter {
   optional string param_str = 3 [default = ''];
   // DEPRECATED
   optional bool share_in_parallel = 4 [default = false];
+}
+
+
+message AttentionParameter {
+    optional string map_file = 1;
+    optional uint32 new_height = 2 [default = 1000]; // the new height for mapping
 }
 
 // Message that stores parameters used by RecurrentLayer
