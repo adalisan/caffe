@@ -32,4 +32,4 @@ class CrossEntropyLossLayer : public LossLayer<Dtype> {
 
 }  // namespace caffe
 
-#endif  // CAFFE_SIGMOID_CROSS_ENTROPY_LOSS_LAYER_HPP_
+#endif  // CAFFE_CROSS_ENTROPY_LOSS_LAYER_HPP_
