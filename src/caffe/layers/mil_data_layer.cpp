@@ -14,6 +14,11 @@
 #include "caffe/layer.hpp"
 #include "caffe/layers/data_layer.hpp"
 #include "caffe/layers/mil_data_layer.hpp"
+
+
+//#include "caffe/layers/base_data_layer.hpp"
+#include "caffe/util/benchmark.hpp"
+
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
@@ -52,7 +57,6 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   std::copy(this->transform_param_.mean_value().begin(),
       this->transform_param_.mean_value().end(),
       std::back_inserter(mean_value_));
-
   if(mean_value_.size() == 0)
     for(int i = 0; i < channels; i++)
       mean_value_.push_back((float)128.0);
@@ -68,7 +72,6 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   LOG(INFO) << "MIL Data Layer: "<< "images_per_batch: " << images_per_batch;
   for(int i = 0; i < mean_value_.size(); i++)
     LOG(INFO) << "MIL Data Layer: "<< "mean_value[" << i << "]: " << mean_value_[i];
-
   const bool prefetch_needs_rand =
       this->transform_param_.mirror() ||
       this->transform_param_.crop_size();
@@ -120,7 +123,7 @@ void MILDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
 
   // label
   vector<int> label_size (4,0);
-  label_size[0]=  images_per_batch ;label_size[1] =  n_classes; label_size[2] = 1; label_size[3] =  1;
+  label_size[0]=  1 ;label_size[1] =  n_classes; label_size[2] = 1; label_size[3] =  1;
   top[1]->Reshape(label_size);
   for (int i = 0; i < this->prefetch_.size(); ++i) {
     this->prefetch_[i]->label_.Reshape(label_size);
@@ -159,14 +162,16 @@ void MILDataLayer<Dtype>::InternalThreadEntry() {
     // Sample which image to read
     unsigned int index = counter_; counter_ = counter_ + 1;
     const unsigned int rand_index = this->PrefetchRand();
-    if(this->layer_param_.mil_data_param().randomize())
-      index = rand_index;
+    if(this->layer_param_.mil_data_param().randomize() && (i_image==0)){
+      // index = ((rand_index*images_per_batch) % this->num_images_)*images_per_batch;
+      index = (rand_index/images_per_batch)*images_per_batch;
+      counter_ = index + 1;
+    }
 
     // LOG(INFO) << index % this->num_images_ << ", " << this->num_images_;
     pair<std::string, std::string> p = this->image_database_[index % this->num_images_];
     string im_name = p.first;
     string full_im_name = p.second;
-
     cv::Mat cv_img = cv::imread(full_im_name, CV_LOAD_IMAGE_COLOR);
     if (!cv_img.data) {
       LOG(ERROR) << "Could not open or find file " << full_im_name;
@@ -203,12 +208,22 @@ void MILDataLayer<Dtype>::InternalThreadEntry() {
       }
       img_size_i = std::max((float)1., img_size_i*scale_factor);
     }
+      
 
-    for(int i_label = 0; i_label < n_classes; i_label++){
-      top_label[i_image*n_classes + i_label] =
-        label[i_label];
+    if (i_image==0)
+      for(int i_label = 0; i_label < n_classes; i_label++){
+	top_label[i_label] = label[i_label];
+      }
+    else{ // check label consistency in the same bag
+      for(int i_label = 0; i_label < n_classes; i_label++){
+        CHECK_EQ(top_label[i_label],label[i_label]);
+      }
     }
   }
+
+  batch_timer.Stop();
+  DLOG(INFO) << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
+
 }
 
 INSTANTIATE_CLASS(MILDataLayer);

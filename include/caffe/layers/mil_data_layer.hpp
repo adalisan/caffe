@@ -42,6 +42,8 @@ namespace caffe {
     protected:
         virtual unsigned int PrefetchRand();
         virtual void InternalThreadEntry();
+        virtual void load_batch(Batch<Dtype>*batch);
+        
         int num_images_;
         unsigned int counter_;
         shared_ptr<Caffe::RNG> prefetch_rng_;
