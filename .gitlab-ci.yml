@@ -15,8 +15,10 @@ build_dep:
   before_script:
   - source ./scripts/gitlab_ci/defaults.sh
   - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
+  - export BUILD_DIR=$(pwd -P)
+  - export FIND_BUILD_DIR=$(find /export/u10/builds -type d -name "caffe")
   script:
-  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh 
+  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh  $BUILD_DIR $FIND_BUILD_DIR
 #  cache:
 #    paths:
 #    - linux-centos6/protobuf*

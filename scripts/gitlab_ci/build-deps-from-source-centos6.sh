@@ -1,5 +1,5 @@
 #!/bin/bash
-
+BLD_DIR=$1
 function download {
     if [[ ! -e $2 ]]; then
         echo "Downloading $1"
@@ -21,7 +21,7 @@ else
     SNAPPY=1.1.3
     LMDB=0.9.15
     BOOST=1_60_0 # also change the download link, 1.58 incompatible with OSX
-    HDF5=1.8.18
+    HDF5=1.8.20
     BLAS=0.2.14
     MAKEJ="${MAKEJ:-4}"
     if [[ ! -e v$GLOG.tar.gz ]]; then 
@@ -45,8 +45,8 @@ else
    if [[ ! -e boost_$BOOST.tar.gz ]]; then 
     download http://iweb.dl.sourceforge.net/project/boost/boost/1.60.0/boost_$BOOST.tar.gz boost_$BOOST.tar.gz
     fi
-   if [[ ! -e hdf5-$HDF5.tar.bz2 ]]; then 
-    download https://www.hdfgroup.org/ftp/HDF5/current18/src/hdf5-$HDF5.tar.bz2 hdf5-$HDF5.tar.bz2
+   if [[ ! -e hdf5-$HDF5.tar.gz ]]; then 
+    download https://www.hdfgroup.org/ftp/HDF5/current18/src/hdf5-$HDF5.tar.gz hdf5-$HDF5.tar.gz
     fi
    if [[ ! -e v$BLAS.tar.gz ]]; then 
     download https://github.com/xianyi/OpenBLAS/archive/v$BLAS.tar.gz v$BLAS.tar.gz
@@ -67,7 +67,7 @@ else
     tar --totals -xzf ../snappy-$SNAPPY.tar.gz
     tar --totals -xzf ../LMDB_$LMDB.tar.gz
     tar --totals -xzf ../boost_$BOOST.tar.gz
-    tar --totals -xjf ../hdf5-$HDF5.tar.bz2
+    tar --totals -xzf ../hdf5-$HDF5.tar.gz
     tar --totals -xzf ../v$BLAS.tar.gz
 fi
 
