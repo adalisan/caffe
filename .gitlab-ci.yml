@@ -1,0 +1,63 @@
+image: gcc
+
+#cache: 
+#  paths:
+#  - linux-centos6/lib
+#  - linux-centos6/include
+  
+stages:
+  - build_dep
+  - build
+  - test  
+
+build_dep:
+  stage: build_dep
+  before_script:
+  - source ./scripts/gitlab_ci/defaults.sh
+  - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
+  script:
+  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh 
+#  cache:
+#    paths:
+#    - linux-centos6/protobuf*
+#    - linux-centos6/snappy*
+#    - linux-centos6/boost*
+#    - linux-centos6/*.tar.gz
+#    - linux-centos6/lib
+#    - linux-centos6/include
+
+
+
+build:
+  stage: build
+  before_script:
+  - source ./scripts/gitlab_ci/defaults.sh
+#  - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
+#  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh 
+  script:
+  #- make all
+  #- make test
+  #- make runtest
+  - ./scripts/gitlab_ci/setup-venv.sh ~/venv
+
+  - source ~/venv/bin/activate
+  - ./scripts/gitlab_ci/install-python-deps.sh
+  - ./scripts/gitlab_ci/configure.sh
+  - echo "INCLUDE_DIRS :=  `pwd`/linux-centos6/include \$(PYTHON_INCLUDE) \$(INCLUDE_DIRS)" >> Makefile.config
+  - echo "LIBRARY_DIRS :=  `pwd`/linux-centos6/lib \$(PYTHON_LIB) \$(LIBRARY_DIRS)" >> Makefile.config
+  - echo "BLAS_INCLUDE := `pwd`/linux-centos6/include" >> Makefile.config
+  - echo "BLAS_LIB :=  `pwd`/linux-centos6/lib" >> Makefile.config
+  - echo "CUDA_DIR := /opt/cuda-6.0" >> Makefile.config
+  - cat Makefile.config
+  - ls /opt/
+  - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
+  artifacts:
+    paths:
+    - build
+    - distribute
+
+test:
+  stage: test
+  script:
+  - ./scripts/gitlab_ci/test.sh
+  
