@@ -50,6 +50,9 @@ build:
   - echo "BLAS_INCLUDE := `pwd`/linux-centos6/include" >> Makefile.config
   - echo "BLAS_LIB :=  `pwd`/linux-centos6/lib" >> Makefile.config
   - echo "CUDA_DIR := /opt/cuda-6.0" >> Makefile.config
+  - echo "PROTOBUF_LIBRARY := `pwd`/linux-centos6/lib/libprotobuf.so" >> Makefile.config
+  - echo "PROTOBUF_INCLUDE_DIR := `pwd`/linux-centos6/include" >> Makefile.config
+  - echo "PROTOBUF_LIB := `pwd`/linux-centos6/include/lib" >> Makefile.config
   - cat Makefile.config
   - ls /opt/
   - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
