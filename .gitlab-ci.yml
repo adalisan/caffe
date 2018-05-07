@@ -19,14 +19,14 @@ build_dep:
   - export FIND_BUILD_DIR=$(find /export/u10/builds -type d -name "caffe")
   script:
   - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh  $BUILD_DIR $FIND_BUILD_DIR
-#  cache:
-#    paths:
-#    - linux-centos6/protobuf*
-#    - linux-centos6/snappy*
-#    - linux-centos6/boost*
-#    - linux-centos6/*.tar.gz
-#    - linux-centos6/lib
-#    - linux-centos6/include
+  cache:
+    paths:
+    - $BUILD_DIR/linux-centos6/protobuf*
+    - $BUILD_DIR/linux-centos6/snappy*
+    - $BUILD_DIR/linux-centos6/boost*
+    - $BUILD_DIR/linux-centos6/*.tar.gz
+    - $BUILD_DIR/linux-centos6/lib
+    - $BUILD_DIR/linux-centos6/include
 
 
 
@@ -52,9 +52,14 @@ build:
   - echo "CUDA_DIR := /opt/cuda-6.0" >> Makefile.config
   - echo "PROTOBUF_LIBRARY := `pwd`/linux-centos6/lib/libprotobuf.so" >> Makefile.config
   - echo "PROTOBUF_INCLUDE_DIR := `pwd`/linux-centos6/include" >> Makefile.config
-  - echo "PROTOBUF_LIB := `pwd`/linux-centos6/include/lib" >> Makefile.config
+  - echo "PROTOBUF_LIB := `pwd`/linux-centos6/include" >> Makefile.config
+  #- echo "PROTOBUF_LIBRARY := /opt/protobuf-2.6.1-x86_64/lib/libprotobuf.so" >> Makefile.config
+  #- echo "PROTOBUF_INCLUDE_DIR := /opt/protobuf-2.6.1-x86_64/include" >> Makefile.config
+  #- echo "PROTOBUF_LIB := /opt/protobuf-2.6.1-x86_64/lib" >> Makefile.config
+  #- echo "INCLUDE_DIRS :=  \$(PROTOBUF_INCLUDE_DIR) \$(INCLUDE_DIRS)" >> Makefile.config
+  #- echo "LIBRARY_DIRS :=  \$(PROTOBUF_LIB) \$(LIBRARY_DIRS)" >> Makefile.config
   - cat Makefile.config
-  - ls /opt/
+  - ls linux-centos6/include
   - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
   artifacts:
     paths:
