@@ -1,9 +1,9 @@
 image: gcc
 
-#cache: 
-#  paths:
-#  - linux-centos6/lib
-#  - linux-centos6/include
+cache: 
+  paths:
+  - linux-centos6/*
+  
   
 stages:
   - build_dep
