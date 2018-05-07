@@ -19,6 +19,9 @@ build_dep:
   - export FIND_BUILD_DIR=$(find /export/u10/builds -type d -name "caffe")
   script:
   - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh  $BUILD_DIR $FIND_BUILD_DIR
+  after_script:
+  - ls $BUILD_DIR
+  - ls  linux-centos6
   cache:
     paths:
     - $BUILD_DIR/linux-centos6/protobuf*
@@ -27,6 +30,12 @@ build_dep:
     - $BUILD_DIR/linux-centos6/*.tar.gz
     - $BUILD_DIR/linux-centos6/lib
     - $BUILD_DIR/linux-centos6/include
+    group: aladdin
+  artifacts:
+    paths:
+    - $BUILD_DIR/linux-centos6
+    
+    
 
 
 
