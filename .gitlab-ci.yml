@@ -23,6 +23,7 @@ build_dep:
   - ls $BUILD_DIR
   - ls  linux-centos6
   cache:
+    key: "$CI_COMMIT_REF_SLUG"
     paths:
     - $BUILD_DIR/linux-centos6/protobuf*
     - $BUILD_DIR/linux-centos6/snappy*
@@ -30,7 +31,6 @@ build_dep:
     - $BUILD_DIR/linux-centos6/*.tar.gz
     - $BUILD_DIR/linux-centos6/lib
     - $BUILD_DIR/linux-centos6/include
-    group: aladdin
   artifacts:
     paths:
     - $BUILD_DIR/linux-centos6
