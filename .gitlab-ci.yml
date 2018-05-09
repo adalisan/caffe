@@ -34,6 +34,7 @@ build_dep:
   artifacts:
     paths:
     - $BUILD_DIR/linux-centos6
+    - linux-centos6
     
     
 
@@ -70,6 +71,9 @@ build:
   - cat Makefile.config
   - ls linux-centos6/include
   - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths: $BUILD_DIR/linux-centos6
   artifacts:
     paths:
     - build
