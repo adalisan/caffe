@@ -6,48 +6,16 @@ cache:
   
   
 stages:
-  - build_dep
   - build
   - test  
-
-build_dep:
-  stage: build_dep
-  before_script:
-  - source ./scripts/gitlab_ci/defaults.sh
-  - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
-  - export BUILD_DIR=$(pwd -P)
-  - export FIND_BUILD_DIR=$(find /export/u10/builds -type d -name "caffe")
-  script:
-  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh  $BUILD_DIR $FIND_BUILD_DIR
-  after_script:
-  - ls $BUILD_DIR
-  - ls  linux-centos6
-  cache:
-    key: "$CI_COMMIT_REF_SLUG"
-    paths:
-    - $BUILD_DIR/linux-centos6/protobuf*
-    - $BUILD_DIR/linux-centos6/snappy*
-    - $BUILD_DIR/linux-centos6/boost*
-    - $BUILD_DIR/linux-centos6/*.tar.gz
-    - $BUILD_DIR/linux-centos6/lib
-    - $BUILD_DIR/linux-centos6/include
-  artifacts:
-    paths:
-    - linux-centos6/lib
-    - linux-centos6/include
-    - linux-centos6/bin
-    
-    
-    
-
-
 
 build:
   stage: build
   before_script:
   - source ./scripts/gitlab_ci/defaults.sh
-#  - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
-#  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh 
+  - chmod +x ./scripts/gitlab_ci/build-deps-from-source-centos6.sh
+  - ./scripts/gitlab_ci/build-deps-from-source-centos6.sh 
+
   script:
   #- make all
   #- make test
@@ -76,7 +44,9 @@ build:
   cache:
     key: "$CI_COMMIT_REF_SLUG"
     paths: 
-    - $BUILD_DIR/linux-centos6
+    - linux-centos6/lib
+    - linux-centos6/include
+    - linux-centos6/bin
   artifacts:
     paths:
     - build
