@@ -33,8 +33,12 @@ build_dep:
     - $BUILD_DIR/linux-centos6/include
   artifacts:
     paths:
-    - $BUILD_DIR/linux-centos6
-    - linux-centos6
+    - $BUILD_DIR/linux-centos6/lib
+    - linux-centos6/linux-centos6/lib
+    - $BUILD_DIR/linux-centos6/include
+    - linux-centos6/linux-centos6/include
+    - linux-centos6/linux-centos6/bin
+    - $BUILD_DIR/linux-centos6/bin
     
     
 
