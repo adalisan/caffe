@@ -73,7 +73,8 @@ build:
   - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
   cache:
     key: "$CI_COMMIT_REF_SLUG"
-    paths: $BUILD_DIR/linux-centos6
+    paths: 
+    - $BUILD_DIR/linux-centos6
   artifacts:
     paths:
     - build
