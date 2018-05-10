@@ -20,9 +20,9 @@ build:
   #- make all
   #- make test
   #- make runtest
-  - ./scripts/gitlab_ci/setup-venv.sh ~/venv
+  - ./scripts/gitlab_ci/setup-venv.sh `pwd`/venv
 
-  - source ~/venv/bin/activate
+  - source `pwd`/venv/bin/activate
   - ./scripts/gitlab_ci/install-python-deps.sh
   - ./scripts/gitlab_ci/configure.sh
   - echo "INCLUDE_DIRS :=  `pwd`/linux-centos6/include \$(PYTHON_INCLUDE) \$(INCLUDE_DIRS)" >> Makefile.config
