@@ -25,6 +25,8 @@ build:
   - source `pwd`/venv/bin/activate
   - ./scripts/gitlab_ci/install-python-deps.sh
   - ./scripts/gitlab_ci/configure.sh
+  - echo "PYTHON_INCLUDE := /opt/Python-2.7.8-x86_64_ucs4/include/python2.7" >> Makefile.config
+  - echo "PYTHON_LIB := /opt/Python-2.7.8-x86_64_ucs4" >> Makefile.config
   - echo "INCLUDE_DIRS :=  `pwd`/linux-centos6/include \$(PYTHON_INCLUDE) \$(INCLUDE_DIRS)" >> Makefile.config
   - echo "LIBRARY_DIRS :=  `pwd`/linux-centos6/lib \$(PYTHON_LIB) \$(LIBRARY_DIRS)" >> Makefile.config
   - echo "BLAS_INCLUDE := `pwd`/linux-centos6/include" >> Makefile.config
@@ -43,7 +45,7 @@ build:
   #- echo "LIBRARY_DIRS :=  \$(PROTOBUF_LIB) \$(LIBRARY_DIRS)" >> Makefile.config
   - cat Makefile.config
   - ls linux-centos6/include
-  - NUM_THREADS=1 ./scripts/gitlab_ci/build.sh
+  - NUM_THREADS=3 ./scripts/gitlab_ci/build.sh
   cache:
     key: "$CI_COMMIT_REF_SLUG"
     paths: 
