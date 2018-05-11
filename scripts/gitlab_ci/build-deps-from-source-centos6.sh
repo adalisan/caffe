@@ -21,7 +21,7 @@ else
     SNAPPY=1.1.3
     LMDB=0.9.15
     BOOSTVER=61
-    BOOST=1_$BOOSTVER_0 # also change the download link, 1.58 incompatible with OSX
+    BOOST=1_${BOOSTVER}_0 # also change the download link, 1.58 incompatible with OSX
     HDF5=1.8.20
     BLAS=0.2.14
     MAKEJ="${MAKEJ:-4}"
