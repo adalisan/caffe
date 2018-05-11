@@ -20,7 +20,8 @@ else
     LEVELDB=1.18
     SNAPPY=1.1.3
     LMDB=0.9.15
-    BOOST=1_61_0 # also change the download link, 1.58 incompatible with OSX
+    BOOSTVER=61
+    BOOST=1_$BOOSTVER_0 # also change the download link, 1.58 incompatible with OSX
     HDF5=1.8.20
     BLAS=0.2.14
     MAKEJ="${MAKEJ:-4}"
@@ -43,7 +44,7 @@ else
     download https://github.com/LMDB/lmdb/archive/LMDB_$LMDB.tar.gz LMDB_$LMDB.tar.gz
     fi
    if [[ ! -e boost_$BOOST.tar.gz ]]; then 
-    download http://iweb.dl.sourceforge.net/project/boost/boost/1.60.0/boost_$BOOST.tar.gz boost_$BOOST.tar.gz
+    download http://iweb.dl.sourceforge.net/project/boost/boost/1.$BOOSTVER.0/boost_$BOOST.tar.gz boost_$BOOST.tar.gz
     fi
    if [[ ! -e hdf5-$HDF5.tar.gz ]]; then 
     download https://www.hdfgroup.org/ftp/HDF5/current18/src/hdf5-$HDF5.tar.gz hdf5-$HDF5.tar.gz
