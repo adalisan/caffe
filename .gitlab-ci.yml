@@ -38,6 +38,8 @@ build:
   - echo "INCLUDE_DIRS := /opt/opencv-2.4.9-x86_64/include \$(INCLUDE_DIRS)" >> Makefile.config
   - echo "LIBRARY_DIRS :=  /opt/opencv-2.4.9-x86_64/lib \$(LIBRARY_DIRS)" >> Makefile.config
   - echo "USE_PKG_CONFIG  :=  1" >> Makefile.config
+  - export PKG_CONFIG_PATH=/opt/opencv-2.4.9-x86_64/lib/pkgconfig:/export/u10/builds/62a04c54/0/aladdin/caffe/linux-centos6/lib/pkgconfig:$PKG_CONFIG_PATH
+  #- echo "INCLUDE_DIRS :=  `pwd`/linux-centos6/ \$(INCLUDE_DIRS)" >> Makefile.config
   #- echo "PROTOBUF_LIBRARY := /opt/protobuf-2.6.1-x86_64/lib/libprotobuf.so" >> Makefile.config
   #- echo "PROTOBUF_INCLUDE_DIR := /opt/protobuf-2.6.1-x86_64/include" >> Makefile.config
   #- echo "PROTOBUF_LIB := /opt/protobuf-2.6.1-x86_64/lib" >> Makefile.config
