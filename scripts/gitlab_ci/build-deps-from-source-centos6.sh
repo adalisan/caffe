@@ -20,7 +20,7 @@ else
     LEVELDB=1.18
     SNAPPY=1.1.3
     LMDB=0.9.15
-    BOOST=1_60_0 # also change the download link, 1.58 incompatible with OSX
+    BOOST=1_61_0 # also change the download link, 1.58 incompatible with OSX
     HDF5=1.8.20
     BLAS=0.2.14
     MAKEJ="${MAKEJ:-4}"
